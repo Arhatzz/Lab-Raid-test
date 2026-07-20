@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.json.sort_keys = False
 # เพิ่มส่วน Ddos Protection
 limiter = Limiter(
-    key_fucnc=get_remote_adress,
+    key_fucnc=get_remote_address,
     app=app,
     default_limits=[],
     storage_url="memory://",
