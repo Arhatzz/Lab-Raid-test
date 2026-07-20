@@ -10,8 +10,16 @@ import time
 app = Flask(__name__)
 # แสดง JSON ตามลำดับที่เขียนไว้ใน Dictionary
 app.json.sort_keys = False
+# เพิ่มส่วน Ddos Protection
+limiter = Limiter(
+    key_fucnc=get_remote_adress,
+    app=app,
+    default_limits=[],
+    storage_url="memory://",
+    headers_enabled=True
+)
 
-WORK_FACTOR = 6_00_000 ##---------##
+WORK_FACTOR = 2_000_000 ##---------##
 PASSWORD_LENGTH = 10
 SALT_SIZE_BYTES = 16
 
@@ -43,6 +51,7 @@ def home():
 
 
 @app.route("/login-check")
+@limiter.limit("5 per second")
 def login_check():
     start_time = time.perf_counter()
 
